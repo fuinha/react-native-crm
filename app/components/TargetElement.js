@@ -2,12 +2,9 @@ import React from 'react';
 
 import { Text, View, StyleSheet } from 'react-native';
 
-import { connect } from 'react-redux';
-import { expanded } from './../reducers/actions';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-class TargetElement extends React.Component {
+export default class TargetElement extends React.Component {
     constructor(props) {
         super(props);
 
@@ -58,12 +55,6 @@ class TargetElement extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        expanded: state.expanded,
-    };
-}
-
 const styles = StyleSheet.create({
     succeeded: {
         fontWeight: 'bold',
@@ -108,4 +99,3 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps)(TargetElement);

@@ -1,5 +1,5 @@
 import React from 'react'; 
-import { visits } from './../assets/mock.data.js';
+//import { visits } from './../assets/mock.data.js';
 
 import VisitList from './VisitList';
 import Settings from './Settings';
@@ -7,7 +7,7 @@ import Settings from './Settings';
 import { StyleSheet, Text, View, ActivityIndicator, Button, TouchableOpacity, Picker } from 'react-native';
 
 import { connect } from 'react-redux';
-import { download, error, favourites, customers, salesmen, navigation } from './../reducers/actions';
+import { download, error, favourites, customers, salesmen, navigation, refresh } from './../reducers/actions';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 // https://oblador.github.io/react-native-vector-icons/
@@ -58,6 +58,7 @@ class CRM extends React.Component {
         let url = 'https://dcrmt.herokuapp.com/api/visits/flattened?token=ca092035a9fe8bd421f8';
 
         this.downloadFrom(url);
+        this.props.dispatch(refresh(url));
         this.props.dispatch(navigation(this.props.navigation));
 
         this.props.navigation.setParams({ 
@@ -86,13 +87,15 @@ class CRM extends React.Component {
 
         let main;
         if (this.props.error) {
-            main = <Text style={styles.centering}>Error: {this.props.error.message}</Text>
+            main =  <View style={styles.centering} >
+                        <Text>Error: {this.props.error.message}</Text>
+                    </View>
 
         } else if (!this.props.isLoaded) {
             main = <ActivityIndicator animating size={70} color="#518eba" style={styles.centering}/>
 
         } else {
-            main = <VisitList style={{ flex: 1 }} style={styles.visitList}/>
+            main = <VisitList style={{ flex: 1 }} style={styles.visitList} visits={this.props.data}/>
         }
 
     	return (

@@ -66,6 +66,15 @@ function customersReducer(state = [], action) {
     }
 }
 
+function urlReducer(state='', action) {
+    switch(action.type) {
+    case 'REFRESH':
+        return action.url;
+    default:
+        return state;
+    }
+}
+
 function navReducer(state=null, action) {
     switch(action.type) {
     case 'NAVIGATION':
@@ -74,6 +83,7 @@ function navReducer(state=null, action) {
         return state;
     }
 }
+
 
 /**
  * Export GlobalState
@@ -85,6 +95,7 @@ const GlobalState = combineReducers({
     favourites: favouritesReducer,
     salesmen: salesmenReducer,
     customers: customersReducer,
+    url: urlReducer,
     nav: navReducer
 });
 

@@ -1,4 +1,6 @@
 
+export const key = '@P7_2017_IWEB:visits';
+
 export function download(data, isLoaded) {
     return {
         type: 'DOWNLOAD',
@@ -42,10 +44,16 @@ export function reset() {
     };
 }
 
+export function refresh(url) {
+    return {
+        type: 'REFRESH',
+        url: url
+    }
+}
+
 export function navigation(nav) {
     return {
         type: 'NAVIGATION',
         nav: nav
     }
 }
-

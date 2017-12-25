@@ -5,10 +5,10 @@ import TargetDetail from './TargetDetail';
 import CustomerDetail from './CustomerDetail';
 import SalesmanDetail from './SalesmanDetail';
 
-import { ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, View, StyleSheet, TouchableOpacity, Text, Switch, AsyncStorage } from 'react-native';
 
 import { connect } from 'react-redux';
-import { error, favourites } from './../reducers/actions';
+import { error, favourites, key } from './../reducers/actions';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -24,11 +24,19 @@ class Detail extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            saved: false
+        }
+
     	this.favourite 			= this.favourite.bind(this);
     	this.updateFavourites 	= this.updateFavourites.bind(this);
     	this.isFavourite 		= this.isFavourite.bind(this);
+        this._isSaved           = this._isSaved.bind(this);
 
         this.visit = this.props.navigation.state.params.visit;
+
+        this._isSaved(this.visit);
     }
 
     componentDidMount() {
@@ -78,11 +86,64 @@ class Detail extends React.Component {
         return result;
     }
 
+    async _isSaved(visit) {
+        let result = false;
+        try {
+            var value = await AsyncStorage.getItem(key);
+            if (value != null) {
+                value = JSON.parse(value);
+
+                value.map((n_visit, index) => {
+                    if (n_visit.id === visit.id) {result = true;}
+                });
+            }
+            
+            this.setState({ saved: result });
+
+        } catch (error) {  // Error saving data 
+            alert('Error: ' + error);
+        }   
+    }
+
+    async _saveData(event) {
+        try {
+            this.setState({ saved: event })
+            if (event) {
+                var value = await AsyncStorage.getItem(key);
+                if (value == null) 
+                    await AsyncStorage.setItem(key, JSON.stringify([this.visit]));
+                else {
+                    value = JSON.parse(value);
+                    value.unshift(this.visit);
+                    await AsyncStorage.setItem(key, JSON.stringify(value));
+                }
+
+            } else if (!event) {
+                var value = await AsyncStorage.getItem(key);
+                value = JSON.parse(value);
+                var result = [];
+                value.map((n_visit, index) => {
+                    if (n_visit.id !== this.visit.id) 
+                        result.push(n_visit);
+                });
+                await AsyncStorage.setItem(key, JSON.stringify(result));
+            }
+
+        } catch (error) {  // Error saving data 
+            alert('Error: ' + error);
+        }
+    }
+
     render() {
 
         return (
             <ScrollView style={{ backgroundColor: '#FFFFFF' }}>
                 <View style={styles.container} >
+                    <View style={styles.row}>
+                        <Text>Offline access.</Text>
+                        <Switch onValueChange={this._saveData.bind(this)} value={this.state.saved}/>
+                    </View>
+                    <View style={styles.hr} />
             		<VisitDetail visit={this.visit} style={styles.item}/>
                     <View style={styles.hr} />
                     <TargetDetail targets={this.visit.Targets} style={styles.item}/>
@@ -125,6 +186,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#CED0CE',
         marginTop: '3%',
         marginBottom: '3%'
+    },
+    row: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 });
 

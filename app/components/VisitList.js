@@ -17,12 +17,11 @@ class VisitList extends React.Component {
 
     refresh() {
     	this.setState({ refreshing: true })
-        fetch('https://dcrmt.herokuapp.com/api/visits/flattened?token=ca092035a9fe8bd421f8')
+        fetch(this.props.url)
 		.then((res) 			=> 	res.json())
 		.then((result) 		=> 	{ this.props.dispatch(download(result, true));	},
 				(error_message) => { this.props.dispatch(error(error_message)); 	}
 		);
-        console.log('Refreshed!')
         this.setState({ refreshing: false })
     }
 
@@ -40,7 +39,7 @@ class VisitList extends React.Component {
     }
     
 	render() {
-        if (this.props.data.length < 1) {
+        if (this.props.visits.length < 1) {
             return (
                 <View style={styles.centering} >
 				    <Text>No Results</Text>
@@ -49,7 +48,7 @@ class VisitList extends React.Component {
         } else {
 	        return (
 				<FlatList
-                    data={this.props.data}
+                    data={this.props.visits}
                     renderItem={({item}) => 
                     	<VisitListElement visit={item}/>
                     }
@@ -67,7 +66,7 @@ class VisitList extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.data
+        url: state.url
     };
 }
 

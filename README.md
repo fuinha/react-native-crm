@@ -62,6 +62,14 @@ Además, se han añadido las siguientes mejoras que se detallaban en el enunciad
   this.props.navigation.state.params.visit
   ```
 
+* **Almacenamiento de visitas**. Cada visita, en su vista de detalles tiene un *Switch*, que te permite guardarla para consultarla sin conexión.
+
+  La visita seleccionada se guarda mediante la API **AsyncStorage** empleando una única clave *@P7_2017_IWEB:visits* que almacena todas las visitas en un array.
+
+  Por otro lado, podemos ver todas las visitas guardadas en una pestaña nueva que ha sido añadida utilizando un *TabNavigator* que hemos incrustado dentro del *StackNavigator*. De esta forma, podemos ver por separado las visitas guardadas y todas las visitas del CRM.
+
+  En esa nueva pestaña, también se ha añadido un nuevo botón que te permite borrar todas las visitas guardadas con un solo toque.
+
 ## Autores
 
 Esta práctica ha sido realizada por [Tasio Méndez Ayerbe](https://github.com/tasiomendez).

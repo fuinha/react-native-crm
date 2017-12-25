@@ -2,10 +2,10 @@ import React from 'react';
 
 import { StackNavigator } from 'react-navigation';
 
-import CRM from './../components/CRM';
+import Navigator from './TabNavigator';
 import Detail from './../components/Detail';
 
 export default AppNavigator = StackNavigator({
-    VisitList: { screen: CRM },
+    VisitList: { screen: Navigator },
     Info: { screen: Detail }
 });

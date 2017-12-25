@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, Button, Switch, Picker, TextInput } from 'react
 import Modal from 'react-native-modal';
 
 import { connect } from 'react-redux';
-import { download, error, reset } from './../reducers/actions';
+import { download, error, reset, refresh } from './../reducers/actions';
 
 class Settings extends React.Component {
     constructor(props) {
@@ -49,6 +49,7 @@ class Settings extends React.Component {
             {url += '&salesman=' + this.state.salesman;}
 
         this.downloadFrom(url);
+        this.props.dispatch(refresh(url));
     }
 
     reset() {
