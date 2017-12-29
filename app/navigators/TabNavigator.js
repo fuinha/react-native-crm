@@ -1,5 +1,6 @@
 import React from 'react'; 
 
+import { Platform } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 
 import CRM from './../components/CRM';
@@ -21,7 +22,7 @@ export default Navigator = TabNavigator(
     			fontSize: 12
   			},
   			style: {
-    			backgroundColor: '#518eba',
+    			backgroundColor: (Platform.OS === 'android') ? '#518eba' : 'white',
     			borderColor: 'white'
   			},
 		}

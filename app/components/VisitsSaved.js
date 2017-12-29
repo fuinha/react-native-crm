@@ -16,6 +16,9 @@ class VisitsSaved extends React.Component {
         headerRight:  (<TouchableOpacity onPress={() => AsyncStorage.removeItem(key)}>
                             <Icon name='trash-o' color='#518eba' size={30} style={{ paddingRight: 15 }} />
                        </TouchableOpacity>),
+        tabBarIcon: ({ tintColor }) => (
+            <Icon name='save' color={tintColor} size={20}/>
+        )
     };
 
     constructor(props) {

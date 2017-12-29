@@ -4,7 +4,7 @@ import React from 'react';
 import VisitList from './VisitList';
 import Settings from './Settings';
 
-import { StyleSheet, Text, View, ActivityIndicator, Button, TouchableOpacity, Picker } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, Button, TouchableOpacity, Picker, Platform } from 'react-native';
 
 import { connect } from 'react-redux';
 import { download, error, favourites, customers, salesmen, navigation, refresh } from './../reducers/actions';
@@ -19,6 +19,9 @@ class CRM extends React.Component {
             headerRight:  (<TouchableOpacity onPress={(navigation.state.params) ? navigation.state.params.filter : () => null}>
                                 <Icon name='filter-list' color='#518eba' size={30} style={{ paddingRight: 15 }} />
                            </TouchableOpacity>),
+            tabBarIcon: ({ tintColor }) => (
+                <Icon name='format-list-bulleted' color={tintColor} size={20}/>
+            )
         }
     );
 
@@ -92,7 +95,7 @@ class CRM extends React.Component {
                     </View>
 
         } else if (!this.props.isLoaded) {
-            main = <ActivityIndicator animating size={70} color="#518eba" style={styles.centering}/>
+            main = <ActivityIndicator animating size={(Platform.OS === 'android') ? 70: 1} color="#518eba" style={styles.centering}/>
 
         } else {
             main = <VisitList style={{ flex: 1 }} style={styles.visitList} visits={this.props.data}/>
